@@ -141,17 +141,6 @@
               <li>
                 <a
                   href="#"
-                  id="classBtn"
-                  class="nav-item"
-                  data-title="Class Performance Overview"
-                >
-                  <i class="fas fa-chart-bar"></i>
-                  <span>Class Analytics</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
                   id="recentBtn"
                   class="nav-item"
                   data-title="Recent Predictions"
@@ -529,164 +518,316 @@
             <div class="section-header">
               <h3>Batch Student Analysis</h3>
               <p>
-                Upload CSV file with student data for bulk analysis and
-                predictions
+                Upload CSV file with student data for bulk analysis and comprehensive insights
               </p>
             </div>
 
-            <div class="card">
-              <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">
-                  <i class="fas fa-users"></i> Batch Analysis
-                </h4>
-              </div>
-              <div class="card-body">
-                <div class="alert alert-info">
-                  <h5><i class="fas fa-info-circle"></i> How to use:</h5>
-                  <ol class="mb-0">
-                    <li>Download the sample CSV template</li>
-                    <li>Fill in your student data</li>
-                    <li>Upload the CSV file for analysis</li>
-                    <li>View comprehensive analytics and predictions</li>
-                  </ol>
+            <div class="content-grid">
+              <!-- Upload Card -->
+              <div class="card">
+                <div class="card-header">
+                  <h4><i class="fas fa-upload"></i> Upload Student Data</h4>
                 </div>
-
-                <div class="text-center my-4">
-                  <a href="/download_sample" class="btn btn-success btn-lg">
-                    <i class="fas fa-download"></i> Download Sample CSV
-                  </a>
-                </div>
-
-                <form
-                  id="batchForm"
-                  action="/predict_batch"
-                  method="POST"
-                  enctype="multipart/form-data"
-                >
-                  <div class="mb-4">
-                    <label for="file" class="form-label fw-bold"
-                      >Upload Student Data CSV</label
-                    >
-                    <input
-                      class="form-control form-control-lg"
-                      type="file"
-                      id="file"
-                      name="file"
-                      accept=".csv"
-                      required
-                    />
-                    <div class="form-text">
-                      File must include: studytime, failures, absences, G1, G2
-                      columns
-                    </div>
+                <div class="card-body">
+                  <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle"></i> How to use:</h5>
+                    <ol class="mb-0">
+                      <li>Download the sample CSV template</li>
+                      <li>Fill in your student data</li>
+                      <li>Upload the CSV file for analysis</li>
+                      <li>View comprehensive analytics and download results</li>
+                    </ol>
                   </div>
 
-                  <button type="submit" class="btn btn-primary btn-lg w-100">
-                    <i class="fas fa-chart-bar"></i> Analyze Students
-                  </button>
-                </form>
+                  <div class="text-center my-4">
+                    <button id="downloadSampleBtn" class="btn btn-success btn-lg">
+                      <i class="fas fa-download"></i> Download Sample CSV
+                    </button>
+                  </div>
+
+                  <form id="batchForm" enctype="multipart/form-data">
+                    <div class="mb-4">
+                      <label for="file" class="form-label fw-bold">
+                        <i class="fas fa-file-csv"></i> Upload Student Data CSV
+                      </label>
+                      <input
+                        class="form-control form-control-lg"
+                        type="file"
+                        id="file"
+                        name="file"
+                        accept=".csv"
+                        required
+                      />
+                      <div class="form-text">
+                        Required columns: studytime, failures, absences, G1, G2<br>
+                        Optional columns: famsup, schoolsup, internet, paid
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                      <i class="fas fa-chart-bar"></i> Analyze Students
+                    </button>
+                  </form>
+
+                  <!-- Batch Results -->
+                  <div id="batchResults" class="mt-4" style="display: none;">
+                    <div class="alert alert-success">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h5 class="mb-1"><i class="fas fa-check-circle"></i> Analysis Complete!</h5>
+                          <p class="mb-0">Your batch analysis has been processed successfully.</p>
+                        </div>
+                        <button id="downloadResultsBtn" class="btn btn-success">
+                          <i class="fas fa-download"></i> Download Full Results
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Instructions Card -->
+              <div class="card">
+                <div class="card-header">
+                  <h4><i class="fas fa-book"></i> CSV Format Guide</h4>
+                </div>
+                <div class="card-body">
+                  <h6>Required Columns:</h6>
+                  <ul>
+                    <li><strong>studytime</strong>: 1-4 (1: <2h, 2: 2-5h, 3: 5-10h, 4: >10h)</li>
+                    <li><strong>failures</strong>: Number of past failures (0-4)</li>
+                    <li><strong>absences</strong>: Number of absences (0-93)</li>
+                    <li><strong>G1</strong>: First period grade (0-20)</li>
+                    <li><strong>G2</strong>: Second period grade (0-20)</li>
+                  </ul>
+
+                  <h6>Optional Columns:</h6>
+                  <ul>
+                    <li><strong>famsup</strong>: Family support (yes/no)</li>
+                    <li><strong>schoolsup</strong>: Extra school support (yes/no)</li>
+                    <li><strong>internet</strong>: Internet access at home (yes/no)</li>
+                    <li><strong>paid</strong>: Extra paid classes (yes/no)</li>
+                  </ul>
+
+                  <div class="alert alert-warning mt-3">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Note:</strong> The CSV file should not have an index column. 
+                    Use the sample template to ensure correct format.
+                  </div>
+                </div>
               </div>
             </div>
-          </section>
 
-          <!-- Overall Class Section -->
-          <section id="classSection" class="content-section">
-            <div class="section-header">
-              <h3>Class Performance Analytics</h3>
-              <p>
-                Comprehensive overview of class performance, trends, and
-                comparative analysis
-              </p>
-            </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-              <div class="stat-card card">
-                <div class="stat-icon pass">
-                  <i class="fas fa-check-circle"></i>
+            <!-- Batch Analytics Dashboard -->
+            <div id="batchAnalytics" style="display: none;">
+              <!-- Summary Stats -->
+              <div class="stats-grid">
+                <div class="stat-card card">
+                  <div class="stat-icon primary">
+                    <i class="fas fa-users"></i>
+                  </div>
+                  <div class="stat-content">
+                    <h4>Total Students</h4>
+                    <div class="stat-value" id="totalStudents">0</div>
+                    <div class="stat-trend">Analyzed</div>
+                  </div>
                 </div>
-                <div class="stat-content">
-                  <h4>Pass Rate</h4>
-                  <div class="stat-value">78.5%</div>
-                  <div class="stat-trend up">+5.2% from last period</div>
+
+                <div class="stat-card card">
+                  <div class="stat-icon success">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div class="stat-content">
+                    <h4>Predicted Pass</h4>
+                    <div class="stat-value" id="predictedPass">0</div>
+                    <div class="stat-trend" id="passRate">0%</div>
+                  </div>
+                </div>
+
+                <div class="stat-card card">
+                  <div class="stat-icon warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </div>
+                  <div class="stat-content">
+                    <h4>At Risk</h4>
+                    <div class="stat-value" id="atRiskStudents">0</div>
+                    <div class="stat-trend" id="atRiskRate">0%</div>
+                  </div>
+                </div>
+
+                <div class="stat-card card">
+                  <div class="stat-icon info">
+                    <i class="fas fa-chart-line"></i>
+                  </div>
+                  <div class="stat-content">
+                    <h4>Avg Confidence</h4>
+                    <div class="stat-value" id="avgConfidence">0%</div>
+                    <div class="stat-trend">Model Accuracy</div>
+                  </div>
+                </div>
+
+                <div class="stat-card card">
+                  <div class="stat-icon primary">
+                    <i class="fas fa-clock"></i>
+                  </div>
+                  <div class="stat-content">
+                    <h4>Avg Study Time</h4>
+                    <div class="stat-value" id="avgStudyTime">0h</div>
+                    <div class="stat-trend">Per week</div>
+                  </div>
+                </div>
+
+                <div class="stat-card card">
+                  <div class="stat-icon danger">
+                    <i class="fas fa-calendar-times"></i>
+                  </div>
+                  <div class="stat-content">
+                    <h4>Avg Absences</h4>
+                    <div class="stat-value" id="avgAbsences">0</div>
+                    <div class="stat-trend">Per student</div>
+                  </div>
                 </div>
               </div>
 
-              <div class="stat-card card">
-                <div class="stat-icon warning">
-                  <i class="fas fa-exclamation-triangle"></i>
+              <!-- Quick Insights & At-Risk Students -->
+              <div class="content-grid">
+                <!-- Quick Insights -->
+                <div class="card">
+                  <div class="card-header">
+                    <h4><i class="fas fa-lightbulb"></i> Quick Insights</h4>
+                  </div>
+                  <div class="card-body">
+                    <div id="quickInsights">
+                      <div class="insight-item">
+                        <i class="fas fa-chart-line text-primary"></i>
+                        <div>
+                          <strong>Performance Trends</strong>
+                          <p>Analyzing student patterns and risk factors...</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="stat-content">
-                  <h4>At Risk</h4>
-                  <div class="stat-value">12.3%</div>
-                  <div class="stat-trend down">-2.1% from last period</div>
+
+                <!-- At-Risk Students -->
+                <div class="card">
+                  <div class="card-header">
+                    <h4><i class="fas fa-exclamation-triangle"></i> At-Risk Students</h4>
+                  </div>
+                  <div class="card-body">
+                    <div id="atRiskList" class="at-risk-list">
+                      <p class="text-muted">No at-risk students identified yet.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="stat-card card">
-                <div class="stat-icon primary">
-                  <i class="fas fa-clock"></i>
+              <!-- Charts Grid -->
+              <div class="charts-grid">
+                <!-- Prediction Distribution -->
+                <div class="chart-card card">
+                  <div class="card-header">
+                    <h5><i class="fas fa-chart-pie"></i> Prediction Distribution</h5>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="batchPredictionChart"></canvas>
+                  </div>
                 </div>
-                <div class="stat-content">
-                  <h4>Avg. Study Time</h4>
-                  <div class="stat-value">2.8h/week</div>
-                  <div class="stat-trend up">+0.4h from last period</div>
+
+                <!-- Study Time Impact -->
+                <div class="chart-card card">
+                  <div class="card-header">
+                    <h5><i class="fas fa-book"></i> Study Time Impact</h5>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="batchStudyTimeChart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Absences Analysis -->
+                <div class="chart-card card">
+                  <div class="card-header">
+                    <h5><i class="fas fa-calendar-times"></i> Absences Analysis</h5>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="batchAbsencesChart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Grade Comparison -->
+                <div class="chart-card card">
+                  <div class="card-header">
+                    <h5><i class="fas fa-graduation-cap"></i> Grade Comparison</h5>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="batchGradeChart"></canvas>
+                  </div>
                 </div>
               </div>
 
-              <div class="stat-card card">
-                <div class="stat-icon danger">
-                  <i class="fas fa-times-circle"></i>
+              <!-- Feature Correlation & Detailed Predictions -->
+              <div class="content-grid">
+                <!-- Feature Correlation -->
+                <div class="card">
+                  <div class="card-header">
+                    <h4><i class="fas fa-project-diagram"></i> Feature Correlation</h4>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="featureCorrelationChart" height="300"></canvas>
+                  </div>
                 </div>
-                <div class="stat-content">
-                  <h4>Avg. Absences</h4>
-                  <div class="stat-value">4.2</div>
-                  <div class="stat-trend up">+0.8 from last period</div>
+
+                <!-- Detailed Student Predictions -->
+                <div class="card">
+                  <div class="card-header">
+                    <h4><i class="fas fa-table"></i> Student Predictions</h4>
+                    <div class="table-actions">
+                      <button class="action-button" id="exportPredictionsBtn">
+                        <i class="fas fa-download"></i> Export
+                      </button>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-container">
+                      <table id="batchPredictionsTable" class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Student</th>
+                            <th>Study Time</th>
+                            <th>G1</th>
+                            <th>G2</th>
+                            <th>Prediction</th>
+                            <th>Confidence</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Charts -->
-            <div class="charts-grid">
-              <div class="chart-card card">
+              <!-- Risk Factors Analysis -->
+              <div class="card">
                 <div class="card-header">
-                  <h5>
-                    <i class="fas fa-chart-pie"></i> Pass/Fail Distribution
-                  </h5>
+                  <h4><i class="fas fa-analytics"></i> Risk Factors Analysis</h4>
                 </div>
                 <div class="card-body">
-                  <canvas id="passFailChart"></canvas>
-                </div>
-              </div>
-
-              <div class="chart-card card">
-                <div class="card-header">
-                  <h5><i class="fas fa-book"></i> Study Time Impact</h5>
-                </div>
-                <div class="card-body">
-                  <canvas id="studyTimeChart"></canvas>
-                </div>
-              </div>
-
-              <div class="chart-card card">
-                <div class="card-header">
-                  <h5>
-                    <i class="fas fa-calendar-times"></i> Absences Analysis
-                  </h5>
-                </div>
-                <div class="card-body">
-                  <canvas id="absencesChart"></canvas>
-                </div>
-              </div>
-
-              <div class="chart-card card">
-                <div class="card-header">
-                  <h5>
-                    <i class="fas fa-graduation-cap"></i> Grade Comparison
-                  </h5>
-                </div>
-                <div class="card-body">
-                  <canvas id="gradeComparisonChart"></canvas>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h6>Top Risk Indicators</h6>
+                      <div id="riskIndicators">
+                        <!-- Risk indicators will be populated here -->
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <h6>Intervention Recommendations</h6>
+                      <div id="interventionRecommendations">
+                        <!-- Recommendations will be populated here -->
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
