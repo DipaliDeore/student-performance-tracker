@@ -1196,6 +1196,88 @@ body {
 }
 
 /* ===== BATCH ANALYTICS STYLES ===== */
+.stats-grid {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  /* keep all items on a single row; allow horizontal scroll when viewport is too narrow */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px; /* space for scrollbar */
+}
+
+.stat-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  min-height: 84px;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.stat-icon.primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+.stat-icon.success { background: linear-gradient(135deg, var(--success), #2e7d32); }
+.stat-icon.warning { background: linear-gradient(135deg, var(--warning), #ffb74d); }
+.stat-icon.info { background: linear-gradient(135deg, var(--info), #1976d2); }
+.stat-icon.danger { background: linear-gradient(135deg, var(--danger), #e53935); }
+
+.stat-content h4 {
+  font-size: 0.9rem;
+  margin: 0 0 6px 0;
+  color: var(--gray);
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1;
+}
+
+.stat-trend {
+  font-size: 0.8rem;
+  color: var(--gray);
+}
+
+/* Make the stat-value and trend stack vertically inside a compact column */
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Make each stat card a fixed compact tile so they don't wrap to a new line */
+.stat-card {
+  flex: 0 0 180px; /* fixed tile width */
+}
+
+@media (max-width: 600px) {
+  .stat-card { flex: 0 0 140px; }
+  .stat-icon { width: 44px; height: 44px; font-size: 1rem; }
+  .stat-value { font-size: 1.1rem; }
+}
+
 .insight-item {
   display: flex;
   align-items: flex-start;
@@ -1290,3 +1372,4 @@ body {
 [data-theme="dark"] .recommendation-item {
   border-bottom-color: var(--dark);
 }
+
